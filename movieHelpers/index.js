@@ -56,6 +56,19 @@ const movieHelpers = {
       errorHandler(e)
     }
   },
+  
+  async haveRecentCache(model, daysAgo) {
+    const mostRecentUpdate = await Update.findOne({
+      where: {model},
+      order: [['id', 'DESC']],
+      raw: true
+    })
+    if (!mostRecentUpdate || (new Date() - mostRecentUpdate.createdAt > 1000*60*60*24*daysAgo)) {
+      console.log('either no recent update, or not recent enough.')
+      return false
+    }
+    return true
+  }
 }
 
 function createTimestamps() {

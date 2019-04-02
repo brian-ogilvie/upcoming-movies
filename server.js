@@ -8,7 +8,7 @@ const PORT = process.env.EXPRESS_PORT
 const TMDB = require('./TMDB')
 const db = require('./models')
 const {Genre, Movie, Update} = db
-const {cacheGenres, cacheMovies, optimizeMovies} = require('./movieHelpers')
+const {cacheGenres, cacheMovies, optimizeMovies, haveRecentCache} = require('./movieHelpers')
 
 const app = new express()
 app.use(morgan('dev'))
@@ -17,13 +17,16 @@ app.use(bodyParser.json())
 //check for movies in cache
 app.get('/movies', async (req, res, next) => {
   try {
+    const recent = await haveRecentCache('movies', 1)
+    if (!recent) {
+      return next()
+    }
     const cachedMovies = await Movie.findAll({
       attributes: {
         exclude: ['created_at', 'updated_at']
       }
     })
     if (cachedMovies.length) {
-      console.log('sending cached movies')
       return res.json({movies: cachedMovies})
     }
     next()
@@ -52,6 +55,10 @@ app.get('/movies', async (req, res) => {
 // check for cached genres
 app.get('/genres', async (req, res, next) => {
   try {
+    const recent = await haveRecentCache('genres', 7)
+    if (!recent) {
+      return next()
+    }
     const cachedGenres = await Genre.findAll({attributes: ['id', 'name']})
     if (cachedGenres.length) {
       return res.json({genres: cachedGenres})
