@@ -7,7 +7,20 @@ const TMDB = {
     const endpoint = `${URL}movie/upcoming?api_key=${apiKey}&language=en-US&page=${pageNum}`
     try {
       const res = await axios.get(endpoint)
+      const movies = res.data.results
+      
       return {movies: res.data.results}
+    } catch (e) {
+      return {error: e.message}
+    }
+  },
+
+  async getGenres() {
+    const endpoint = `${URL}genre/movie/list?api_key=${apiKey}&language=en-US`
+    try {
+      const res = await axios.get(endpoint)
+      const {genres} = res.data
+      return {genres}
     } catch (e) {
       return {error: e.message}
     }
