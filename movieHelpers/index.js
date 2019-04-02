@@ -1,5 +1,5 @@
 const db = require('../models')
-const {Genre, Movie} = db
+const {Genre, Movie, Update} = db
 
 const movieHelpers = {
   async cacheGenres(genres) {
@@ -12,6 +12,7 @@ const movieHelpers = {
         }
       })
       await Genre.bulkCreate(genresToInsert)
+      Update.create({model: 'genres'})
     } catch (e) {
       errorHandler(e)
     }
@@ -50,6 +51,7 @@ const movieHelpers = {
         }
       })
       await Movie.bulkCreate(dbMovies)
+      Update.create({model: 'movies'})
     } catch (e) {
       errorHandler(e)
     }

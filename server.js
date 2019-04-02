@@ -7,7 +7,7 @@ const PORT = process.env.EXPRESS_PORT
 
 const TMDB = require('./TMDB')
 const db = require('./models')
-const {Genre, Movie} = db
+const {Genre, Movie, Update} = db
 const {cacheGenres, cacheMovies, optimizeMovies} = require('./movieHelpers')
 
 const app = new express()
