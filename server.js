@@ -40,8 +40,9 @@ app.get('/movies', async (req, res) => {
     if (error) {
       throw error
     }
-    cacheMovies(movies)
-    res.json({movies})
+    const smallMovies = await optimizeMovies(movies)
+    cacheMovies(smallMovies)
+    res.json({movies: smallMovies})
   } catch (e) {
     errorHandler(res, e)
   }
@@ -94,20 +95,34 @@ async function cacheGenres(genres) {
   await Genre.bulkCreate(genresToInsert)
 }
 
-async function cacheMovies(movies) {
-  const now = new Date()
-  const smallMovies = movies.map(movie => {
+async function optimizeMovies(movies) {
+  const genres = await Genre.findAll({attributes: ['id','name'], raw: true})
+  return movies.map(movie => {
+    const theseGenres = movie.genre_ids.map(id => {
+      const genreObj = genres.find(genre => {
+        return genre.id === id
+      })
+      return genreObj ? genreObj.name : 'unknown'
+    })
     return {
       id: movie.id,
       title: movie.title,
       poster_path: movie.poster_path,
-      genres: movie.genre_ids,
+      genres: theseGenres,
       overview: movie.overview,
       release_date: movie.release_date,
+    }
+  })
+}
+
+async function cacheMovies(movies) {
+  const dbMovies = movies.map(movie => {
+    return {
+      ...movie,
       ...createTimestamps()
     }
   })
-  await Movie.bulkCreate(smallMovies)
+  await Movie.bulkCreate(dbMovies)
 }
 
 function createTimestamps() {
