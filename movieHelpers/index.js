@@ -3,44 +3,56 @@ const {Genre, Movie} = db
 
 const movieHelpers = {
   async cacheGenres(genres) {
-    await Genre.truncate({restartIdentity: true})
-    genresToInsert = genres.map(genre => {
-      return {
-        ...genre,
-        ...createTimestamps()
-      }
-    })
-    await Genre.bulkCreate(genresToInsert)
+    try {
+      await Genre.truncate({restartIdentity: true})
+      const genresToInsert = genres.map(genre => {
+        return {
+          ...genre,
+          ...createTimestamps()
+        }
+      })
+      await Genre.bulkCreate(genresToInsert)
+    } catch (e) {
+      errorHandler(e)
+    }
   },
   
   async optimizeMovies(movies) {
-    const genres = await Genre.findAll({attributes: ['id','name'], raw: true})
-    return movies.map(movie => {
-      const theseGenres = movie.genre_ids.map(id => {
-        const genreObj = genres.find(genre => {
-          return genre.id === id
+    try {
+      const genres = await Genre.findAll({attributes: ['id','name'], raw: true})
+      return movies.map(movie => {
+        const theseGenres = movie.genre_ids.map(id => {
+          const genreObj = genres.find(genre => {
+            return genre.id === id
+          })
+          return genreObj ? genreObj.name : 'unknown'
         })
-        return genreObj ? genreObj.name : 'unknown'
+        return {
+          id: movie.id,
+          title: movie.title,
+          poster_path: movie.poster_path,
+          genres: theseGenres,
+          overview: movie.overview,
+          release_date: movie.release_date,
+        }
       })
-      return {
-        id: movie.id,
-        title: movie.title,
-        poster_path: movie.poster_path,
-        genres: theseGenres,
-        overview: movie.overview,
-        release_date: movie.release_date,
-      }
-    })
+    } catch (e) {
+      throw e
+    }
   },
   
   async cacheMovies(movies) {
-    const dbMovies = movies.map(movie => {
-      return {
-        ...movie,
-        ...createTimestamps()
-      }
-    })
-    await Movie.bulkCreate(dbMovies)
+    try {
+      const dbMovies = movies.map(movie => {
+        return {
+          ...movie,
+          ...createTimestamps()
+        }
+      })
+      await Movie.bulkCreate(dbMovies)
+    } catch (e) {
+      errorHandler(e)
+    }
   },
 }
 
@@ -50,6 +62,10 @@ function createTimestamps() {
     created_at: now,
     updated_at: now
   }
+}
+
+function errorHandler(e) {
+  console.log('❗️❗️', e.message)
 }
 
 module.exports = movieHelpers

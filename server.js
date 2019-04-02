@@ -42,8 +42,8 @@ app.get('/movies', async (req, res) => {
       throw error
     }
     const smallMovies = await optimizeMovies(movies)
-    cacheMovies(smallMovies)
     res.json({movies: smallMovies})
+    cacheMovies(smallMovies)
   } catch (e) {
     errorHandler(res, e)
   }
@@ -69,8 +69,9 @@ app.get('/genres', async (req, res) => {
     if (error) {
       throw error
     }
-    cacheGenres(genres)
+    req.genres = genres
     res.json({genres})
+    cacheGenres(genres)
   } catch (e) {
     errorHandler(res, e)
   }

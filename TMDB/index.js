@@ -8,10 +8,9 @@ const TMDB = {
     try {
       const res = await axios.get(endpoint)
       const movies = res.data.results
-      
-      return {movies: res.data.results}
+      return {movies}
     } catch (e) {
-      return {error: e.message}
+      throw e
     }
   },
 
@@ -22,7 +21,7 @@ const TMDB = {
       const {genres} = res.data
       return {genres}
     } catch (e) {
-      return {error: e.message}
+      throw e
     }
   }
 }
