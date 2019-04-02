@@ -13,15 +13,34 @@ const app = new express()
 app.use(morgan('dev'))
 app.use(bodyParser.json())
 
+//check for movies in cache
+app.get('/movies', async (req, res, next) => {
+  try {
+    const cachedMovies = await Movie.findAll({
+      attributes: {
+        exclude: ['created_at', 'updated_at']
+      }
+    })
+    if (cachedMovies.length) {
+      console.log('sending cached movies')
+      return res.json({movies: cachedMovies})
+    }
+    next()
+  } catch (e) {
+    errorHandler(res, e)
+  }
+})
 
 // fallback query API for movies
 app.get('/movies', async (req, res) => {
+  console.log('querying TMDB for movies')
   try {
     const page = req.query.page || null
     const {movies, error} = await TMDB.getMovies(page)
     if (error) {
       throw error
     }
+    cacheMovies(movies)
     res.json({movies})
   } catch (e) {
     errorHandler(res, e)
@@ -66,12 +85,10 @@ const errorHandler = (res, e) => {
 
 async function cacheGenres(genres) {
   await Genre.truncate({restartIdentity: true})
-  const now = new Date()
   genresToInsert = genres.map(genre => {
     return {
       ...genre,
-      created_at: now,
-      updated_at: now
+      ...createTimestamps()
     }
   })
   await Genre.bulkCreate(genresToInsert)
@@ -79,5 +96,24 @@ async function cacheGenres(genres) {
 
 async function cacheMovies(movies) {
   const now = new Date()
-  
+  const smallMovies = movies.map(movie => {
+    return {
+      id: movie.id,
+      title: movie.title,
+      poster_path: movie.poster_path,
+      genres: movie.genre_ids,
+      overview: movie.overview,
+      release_date: movie.release_date,
+      ...createTimestamps()
+    }
+  })
+  await Movie.bulkCreate(smallMovies)
+}
+
+function createTimestamps() {
+  const now = new Date()
+  return {
+    created_at: now,
+    updated_at: now
+  }
 }
