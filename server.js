@@ -37,16 +37,15 @@ app.get('/movies', async (req, res, next) => {
 
 // fallback query API for movies
 app.get('/movies', async (req, res) => {
-  console.log('querying TMDB for movies')
   try {
     const page = req.query.page || null
-    const {movies, error} = await TMDB.getMovies(page)
+    const {movies, totalPages, error} = await TMDB.getMovies(page)
     if (error) {
       throw error
     }
     const smallMovies = await optimizeMovies(movies)
     res.json({movies: smallMovies})
-    cacheMovies(smallMovies)
+    cacheMovies(smallMovies, totalPages)
   } catch (e) {
     errorHandler(res, e)
   }

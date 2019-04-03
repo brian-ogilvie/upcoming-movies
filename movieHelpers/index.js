@@ -1,5 +1,6 @@
 const db = require('../models')
 const {Genre, Movie, Update} = db
+const TMDB = require('../TMDB')
 
 const movieHelpers = {
   async cacheGenres(genres) {
@@ -42,12 +43,21 @@ const movieHelpers = {
     }
   },
   
-  async cacheMovies(movies) {
+  async cacheMovies(movies, totalPages) {
     try {
-      const dbMovies = movies.map(movie => {
+      await Movie.truncate()
+      const allMovies = [...movies]
+      // retrieve all remaining upcoming moveis from TMDB
+      const remainingMovies = await getRemainingPages(totalPages)
+      if (remainingMovies) {
+        const optimizedMovies = await movieHelpers.optimizeMovies(remainingMovies)
+        allMovies.push(...optimizedMovies)
+      }
+      const timestamps = createTimestamps()
+      const dbMovies = allMovies.map(movie => {
         return {
           ...movie,
-          ...createTimestamps()
+          ...timestamps
         }
       })
       await Movie.bulkCreate(dbMovies)
@@ -64,7 +74,6 @@ const movieHelpers = {
       raw: true
     })
     if (!mostRecentUpdate || (new Date() - mostRecentUpdate.createdAt > 1000*60*60*24*daysAgo)) {
-      console.log('either no recent update, or not recent enough.')
       return false
     }
     return true
@@ -79,7 +88,25 @@ function createTimestamps() {
   }
 }
 
+async function getRemainingPages(totalPages) {
+  try {
+    const promises = []
+    for (let page = 2; page <= totalPages; page++) {
+      promises.push(TMDB.getMovies(page))
+    }
+    const resolved = await Promise.all(promises)
+    // flatten the arrays from each promise into one array of movies
+    return resolved.map(result => {
+      return result.movies
+    }).flat()
+  } catch (e) {
+    errorHandler(e)
+    return null
+  }
+}
+
 function errorHandler(e) {
+  // end user doesn't need to know about these errors
   console.log('❗️❗️', e.message)
 }
 
