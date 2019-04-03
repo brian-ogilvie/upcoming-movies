@@ -7,7 +7,7 @@ const PORT = process.env.EXPRESS_PORT
 
 const TMDB = require('./TMDB')
 const db = require('./models')
-const {Genre, Movie, Update} = db
+const {Genre, Movie} = db
 const {cacheGenres, cacheMovies, optimizeMovies, haveRecentCache} = require('./movieHelpers')
 
 const app = new express()
@@ -21,10 +21,13 @@ app.get('/movies', async (req, res, next) => {
     if (!recent) {
       return next()
     }
+    const page = req.query.page || 1
     const cachedMovies = await Movie.findAll({
       attributes: {
-        exclude: ['created_at', 'updated_at']
-      }
+        exclude: ['createdAt', 'updatedAt']
+      },
+      offset: 20 * (page - 1),
+      limit: 20,
     })
     if (cachedMovies.length) {
       return res.json({movies: cachedMovies})
