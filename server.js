@@ -30,6 +30,38 @@ app.get('/config', async (req, res, next) => {
   }
 })
 
+// Check for cached genres
+app.get('/movies', async (req, res, next) => {
+  try {
+    const {haveRecent} = await haveRecentCache('genres', 7)
+    if (haveRecent) {
+      req.haveGenres = true
+    }
+    next()
+  } catch (e) {
+    errorHandler(res, e)
+  }
+})
+
+// Get genres from TMDB
+app.get('/movies', async (req, res, next) => {
+  try {
+    if (req.haveGenres) {
+      return next()
+    }
+    const {genres, error} = await TMDB.getGenres()
+    if (error) {
+      throw error
+    }
+    req.genres = genres
+    cacheGenres(genres)
+    req.haveGenres = true
+    next()
+  } catch (e) {
+    errorHandler(res, e)
+  }
+})
+
 //check for movies in cache
 app.get('/movies', async (req, res, next) => {
   try {
@@ -84,38 +116,6 @@ app.get('/movies/search', async (req, res, next) => {
       }
     })
     res.json({movies})
-  } catch (e) {
-    errorHandler(res, e)
-  }
-})
-
-// check for cached genres
-app.get('/genres', async (req, res, next) => {
-  try {
-    const {haveRecent} = await haveRecentCache('genres', 7)
-    if (!haveRecent) {
-      return next()
-    }
-    const cachedGenres = await Genre.findAll({attributes: ['id', 'name']})
-    if (cachedGenres.length) {
-      return res.json({genres: cachedGenres})
-    }
-    next()
-  } catch (e) {
-    errorHandler(res, e)
-  }
-})
-
-// fallback query API for genres
-app.get('/genres', async (req, res) => {
-  try {
-    const {genres, error} = await TMDB.getGenres()
-    if (error) {
-      throw error
-    }
-    req.genres = genres
-    res.json({genres})
-    cacheGenres(genres)
   } catch (e) {
     errorHandler(res, e)
   }
