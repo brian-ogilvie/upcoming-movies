@@ -1,0 +1,13 @@
+.MovieRow {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+}
+
+.MovieRow__poster {
+  width: 92px;
+}
+
+.MovieRow__content {
+  flex-grow: 2;
+}

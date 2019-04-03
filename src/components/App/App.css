@@ -1,0 +1,7 @@
+.App {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+  height: 100vh;
+  overflow: hidden;
+}

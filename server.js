@@ -102,13 +102,16 @@ app.get('/movies', async (req, res) => {
   }
 })
 
-app.get('/movies/search', async (req, res, next) => {
+app.get('/movies/search', async (req, res) => {
   try {
     const {haveRecent} = await haveRecentCache('movies', 1)
     if (!haveRecent) {
       res.json({movies: []})
     }
     const movies = await Movie.findAll({
+      attributes: {
+        exclude: ['createdAt', 'updatedAt']
+      },
       where: {
         title: {
           [Op.iLike]: `%${req.query.title}%`
