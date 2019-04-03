@@ -18,6 +18,17 @@ const movieHelpers = {
       errorHandler(e)
     }
   },
+
+  cacheConfig(config) {
+    try {
+      Update.create({
+        model: 'config',
+        data: config,
+      })
+    } catch (e) {
+      errorHandler(e)
+    }
+  },
   
   async optimizeMovies(movies) {
     try {
@@ -41,6 +52,19 @@ const movieHelpers = {
     } catch (e) {
       throw e
     }
+  },
+
+  async getConfiguration() {
+    const {haveRecent, data} = await movieHelpers.haveRecentCache('config', 7)
+    if (haveRecent) {
+      return data
+    }
+    const config = await TMDB.getConfiguration()
+    Update.create({
+      model: 'config',
+      data: config,
+    })
+    return config
   },
   
   async cacheMovies(movies, totalPages) {
@@ -68,15 +92,19 @@ const movieHelpers = {
   },
   
   async haveRecentCache(model, daysAgo) {
-    const mostRecentUpdate = await Update.findOne({
-      where: {model},
-      order: [['id', 'DESC']],
-      raw: true
-    })
-    if (!mostRecentUpdate || (new Date() - mostRecentUpdate.createdAt > 1000*60*60*24*daysAgo)) {
-      return false
+    try {
+      const mostRecentUpdate = await Update.findOne({
+        where: {model},
+        order: [['id', 'DESC']],
+        raw: true
+      })
+      if (!mostRecentUpdate || (new Date() - mostRecentUpdate.createdAt > 1000*60*60*24*daysAgo)) {
+        return {haveRecent: false}
+      }
+      return {haveRecent: true, data: mostRecentUpdate.data}
+    } catch (e) {
+      return {haveRecent: false, error: e.message}
     }
-    return true
   }
 }
 
