@@ -7,7 +7,8 @@ const PORT = process.env.EXPRESS_PORT
 
 const TMDB = require('./TMDB')
 const db = require('./models')
-const {Genre, Movie, Update} = db
+const {Genre, Movie} = db
+const Op = db.Sequelize.Op
 const {cacheGenres, cacheMovies, cacheConfig, optimizeMovies, haveRecentCache} = require('./movieHelpers')
 
 const app = new express()
@@ -64,6 +65,34 @@ app.get('/movies', async (req, res) => {
     const smallMovies = await optimizeMovies(movies)
     res.json({movies: smallMovies})
     cacheMovies(smallMovies, totalPages)
+  } catch (e) {
+    errorHandler(res, e)
+  }
+})
+
+app.get('/movies/search', async (req, res) => {
+  try {
+    const {haveRecent} = await haveRecentCache('movies', 1)
+    if (!haveRecent) {
+      return next()
+    }
+    const movies = await Movie.findAll({
+      where: {
+        title: {
+          [Op.iLike]: `%${req.query.title}%`
+        }
+      }
+    })
+    res.json({movies})
+  } catch (e) {
+    errorHandler(res, e)
+  }
+})
+
+app.get('movies/search', async (req, res) => {
+  try {
+    console.log('Time to check TMDB')
+    res.send('We have no data for that movie')
   } catch (e) {
     errorHandler(res, e)
   }
