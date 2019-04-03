@@ -8,7 +8,8 @@ const TMDB = {
     try {
       const res = await axios.get(endpoint)
       const movies = res.data.results
-      return {movies}
+      const totalPages = res.data.totalPages
+      return {movies, totalPages}
     } catch (e) {
       throw e
     }
