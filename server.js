@@ -43,7 +43,7 @@ app.get('/movies', async (req, res, next) => {
   }
 })
 
-// Get genres from TMDB
+// Get genres from TMDB if necessary
 app.get('/movies', async (req, res, next) => {
   try {
     if (req.haveGenres) {
