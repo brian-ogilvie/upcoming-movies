@@ -70,11 +70,11 @@ app.get('/movies', async (req, res) => {
   }
 })
 
-app.get('/movies/search', async (req, res) => {
+app.get('/movies/search', async (req, res, next) => {
   try {
     const {haveRecent} = await haveRecentCache('movies', 1)
     if (!haveRecent) {
-      return next()
+      res.json({movies: []})
     }
     const movies = await Movie.findAll({
       where: {
@@ -84,15 +84,6 @@ app.get('/movies/search', async (req, res) => {
       }
     })
     res.json({movies})
-  } catch (e) {
-    errorHandler(res, e)
-  }
-})
-
-app.get('movies/search', async (req, res) => {
-  try {
-    console.log('Time to check TMDB')
-    res.send('We have no data for that movie')
   } catch (e) {
     errorHandler(res, e)
   }

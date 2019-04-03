@@ -116,10 +116,10 @@ function createTimestamps() {
   }
 }
 
-async function getRemainingPages(totalPages) {
+async function getRemainingPages(totalPages, startPage = 2) {
   try {
     const promises = []
-    for (let page = 2; page <= totalPages; page++) {
+    for (let page = startPage; page <= totalPages; page++) {
       promises.push(TMDB.getMovies(page))
     }
     const resolved = await Promise.all(promises)
