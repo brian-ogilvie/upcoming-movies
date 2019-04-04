@@ -7,7 +7,39 @@ import ActivityIndicator from '../ActivityIndicator/ActivityIndicator'
 class MoviesList extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      height: 0
+    }
+  }
+
+  handleScroll = e => {
+    const list = e.srcElement
+    const listHeight = this.state.height
+    const scroll = list.scrollTop
+    if (scroll + window.innerHeight >= listHeight + 100) {
+      this.props.infiniteScroll()
+    }
+  }
+
+  updateHeight = () => {
+    const height = this.listDiv.offsetHeight
+    this.setState({height})
+  }
+
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll, true)
+    window.addEventListener('resize', this.updateHeight)
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.movies !== prevProps.movies) {
+      this.updateHeight()
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll)
+    window.removeEventListener('resize', this.updateHeight)
   }
 
   render() {
@@ -16,7 +48,7 @@ class MoviesList extends React.Component {
       return <MovieRow movie={movie} key={movie.id} config={config} onSelectMovie={onSelectMovie} />
     })
     return (
-      <div className="MoviesList">
+      <div ref={listDiv => this.listDiv = listDiv} className="MoviesList">
         {allMovies}
         {this.props.loading && <ActivityIndicator />}
       </div>

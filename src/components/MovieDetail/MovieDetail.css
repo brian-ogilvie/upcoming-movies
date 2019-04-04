@@ -14,11 +14,15 @@
 }
 
 .MovieDetail__poster {
-  margin-right: 15px;
+  margin-right: 25px;
   float: left;
   width: 40%;
 }
 
 .MovieDetail__poster img {
   box-shadow: 0 0 50px rgba(0, 0, 0, .4);
+}
+
+.MovieDetail__info, .MovieDetail__poster, .MovieDetail__title {
+  animation: fade-in .3s linear;
 }

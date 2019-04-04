@@ -7,7 +7,7 @@ import Utils from '../../utils'
 import Poster from '../Poster/Poster'
 import ActivityIndicator from '../ActivityIndicator/ActivityIndicator'
 
-class MovieDetail extends React.PureComponent {
+class MovieDetail extends React.Component {
   constructor() {
     super()
     this.state = {
@@ -40,12 +40,14 @@ class MovieDetail extends React.PureComponent {
       return (
         <div className="MovieDetail">
           <h2 className="MovieDetail__title">{title}</h2>
-          <div className="MovieDetail__poster">
-            <Poster size="large" config={config} path={poster_path} />
-          </div>
-          <p>Relsease Date: {Utils.parseDate(release_date)}</p>
-          <p>{allGenres}</p>
-          <p>Overview: {overview}</p>
+          {poster_path && (
+            <div className="MovieDetail__poster">
+              <Poster size="large" config={config} path={poster_path} />
+            </div>
+          )}
+          <p className="MovieDetail__info"><strong>Relsease Date:</strong> {Utils.parseDate(release_date)}</p>
+          <p className="MovieDetail__info"><strong>Genre:</strong> {allGenres}</p>
+          <p className="MovieDetail__info"><strong>Overview:</strong> {overview}</p>
         </div>
       )
     }

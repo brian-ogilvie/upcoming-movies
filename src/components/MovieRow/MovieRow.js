@@ -19,9 +19,11 @@ const MovieRow = ({movie, onSelectMovie, config}) => {
         <p>{allGenres}</p>
         <p className="MovieRow__date">Release Date: {Utils.parseDate(release_date)}</p>
       </div>
-      <div className="MovieRow__poster">
-        <Poster size="small" config={config} path={poster_path} />
-      </div>
+      {poster_path && (
+        <div className="MovieRow__poster">
+          <Poster size="small" config={config} path={poster_path} />
+        </div>
+      )}
     </div>
   )
 }

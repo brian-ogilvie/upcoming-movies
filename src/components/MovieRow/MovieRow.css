@@ -7,6 +7,8 @@
   padding: 10px;
   margin-bottom: 8px;
   box-shadow: 0 0 40px rgba(0, 0, 0, .2);
+  cursor: pointer;
+  animation: fade-in .3s linear;
 }
 
 .MovieRow__poster {

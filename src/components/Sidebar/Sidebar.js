@@ -10,7 +10,8 @@ class Sidebar extends React.Component {
     super(props)
     this.state = {
       movies: [],
-      loading: true
+      loading: true,
+      page: 0,
     }
   }
 
@@ -25,11 +26,18 @@ class Sidebar extends React.Component {
             ...movies
           ],
           loading: false,
+          page: page
         }
       })
     } catch (e) {
       console.log(e.message)
     }
+  }
+
+  infiniteScroll = () => {
+    if (this.state.loading) {return}
+    const page = this.state.page + 1
+    this.getMovies(page)
   }
 
   componentDidMount() {
@@ -41,7 +49,13 @@ class Sidebar extends React.Component {
     return (
       <div className="Sidebar">
         <SearchBar />
-        <MoviesList movies={this.state.movies} loading={this.state.loading} config={config} onSelectMovie={onSelectMovie} />
+        <MoviesList 
+          movies={this.state.movies} 
+          loading={this.state.loading} 
+          config={config} 
+          onSelectMovie={onSelectMovie} 
+          infiniteScroll={this.infiniteScroll} 
+        />
       </div>
     )
   }
