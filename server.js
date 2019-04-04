@@ -103,7 +103,7 @@ app.get('/movies/search', async (req, res) => {
   try {
     const {haveRecent} = await haveRecentCache('movies', 1)
     if (!haveRecent) {
-      res.json({movies: []})
+      return res.json({movies: []})
     }
     const movies = await Movie.findAll({
       attributes: ['id','title', 'poster_path_small', 'genres', 'release_date'],
@@ -111,7 +111,8 @@ app.get('/movies/search', async (req, res) => {
         title: {
           [Op.iLike]: `%${req.query.title}%`
         }
-      }
+      },
+      limit: 10,
     })
     res.json({movies})
   } catch (e) {
