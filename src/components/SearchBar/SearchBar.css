@@ -1,5 +1,6 @@
 .SearchBar {
   position: sticky;
+  z-index: 100;
   top: 0;
   padding: 15px 25px 5px;
   width: 100%;

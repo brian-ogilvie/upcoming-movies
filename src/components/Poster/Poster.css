@@ -1,4 +1,13 @@
 .Poster {
   width: 100%;
   height: auto;
+  transition: opacity .3s linear;
+}
+
+.Poster--waiting {
+  opacity: 0;
+}
+
+.Poster__wrapper {
+  position: relative;
 }
