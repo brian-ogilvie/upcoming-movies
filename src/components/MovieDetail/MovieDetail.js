@@ -33,16 +33,15 @@ class MovieDetail extends React.Component {
   }
 
   render () {
-    const {config} = this.props
     if (this.state.movie) {
-      const {title, overview, release_date, genres, poster_path} = this.state.movie
+      const {title, overview, release_date, genres, poster_path_large} = this.state.movie
       const allGenres = genres.join(', ')
       return (
         <div className="MovieDetail">
           <h2 className="MovieDetail__title">{title}</h2>
-          {poster_path && (
+          {poster_path_large && (
             <div className="MovieDetail__poster">
-              <Poster size="large" config={config} path={poster_path} />
+              <Poster size="large" path={poster_path_large} />
             </div>
           )}
           <p className="MovieDetail__info"><strong>Relsease Date:</strong> {Utils.parseDate(release_date)}</p>

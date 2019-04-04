@@ -36,7 +36,7 @@ class Sidebar extends React.PureComponent {
   }
 
   infiniteScroll = () => {
-    if (this.state.loading) {return}
+    if (this.state.activeSearch || this.state.loading) {return}
     const page = this.state.page + 1
     this.getMovies(page)
   }
@@ -72,14 +72,13 @@ class Sidebar extends React.PureComponent {
   }
 
   render() {
-    const {config, onSelectMovie} = this.props
+    const {onSelectMovie} = this.props
     return (
       <div className="Sidebar">
         <SearchBar onSearch={this.searchMovies} onClear={this.clearSearch} />
         <MoviesList 
           movies={this.state.movies} 
           loading={this.state.loading} 
-          config={config} 
           onSelectMovie={onSelectMovie} 
           infiniteScroll={this.infiniteScroll} 
         />

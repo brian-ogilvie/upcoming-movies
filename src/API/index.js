@@ -25,18 +25,6 @@ const API = {
     }
   },
 
-  async getConfiguration() {
-    try {
-      const url = '/config'
-      const res = await axios.get(url)
-      const {config, error} = res.data
-      if (error) {throw error;}
-      return config
-    } catch (e) {
-      throw e
-    }
-  },
-
   async searchMovies(title) {
     try {
       const url = `/movies/search?title=${title}`
