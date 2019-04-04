@@ -9,7 +9,13 @@ class SearchBar extends React.Component {
 
   render() {
     return (
-      <h1>SearchBar</h1>
+      <div className="SearchBar">
+        <input className="SearchBar__input" type="text" placeholder="Search Movies" />
+        <div className="SearchBar__buttons">
+          <button>Search</button>
+          <button>Clear</button>
+        </div>
+      </div>
     )
   }
 }
