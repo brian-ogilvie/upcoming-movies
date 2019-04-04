@@ -3,15 +3,22 @@
   padding: 15px 25px;
   height: 100%;
   overflow: scroll;
+  font-size: 1.125rem;
 }
 
 .MovieDetail__title {
+  margin-top: 0;
+  margin-bottom: 12px;
   text-align: center;
-  font-size: 3rem;
+  font-size: 3.2rem;
 }
 
 .MovieDetail__poster {
   margin-right: 15px;
   float: left;
   width: 40%;
+}
+
+.MovieDetail__poster img {
+  box-shadow: 0 0 50px rgba(0, 0, 0, .4);
 }

@@ -2,10 +2,11 @@
   display: flex;
   flex-flow: row nowrap;
   align-items: flex-start;
-  background-color: rgb(175, 175, 175);
+  background-color: rgba(175, 175, 175, .6);
   border-radius: 8px;
   padding: 10px;
   margin-bottom: 8px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, .2);
 }
 
 .MovieRow__poster {
@@ -19,6 +20,8 @@
 
 .MovieRow__title {
   margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 1.5rem;
 }
 
 .MovieRow__date {
