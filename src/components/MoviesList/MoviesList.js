@@ -11,8 +11,9 @@ class MoviesList extends React.Component {
   }
 
   render() {
-    const allMovies = this.props.movies.map(movie => {
-      return <MovieRow movie={movie} key={movie.id} onSelectMovie={this.props.onSelectMovie} />
+    const {movies, config, onSelectMovie} = this.props
+    const allMovies = movies.map(movie => {
+      return <MovieRow movie={movie} key={movie.id} config={config} onSelectMovie={onSelectMovie} />
     })
     return (
       <div className="MoviesList">

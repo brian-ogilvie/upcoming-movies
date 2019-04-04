@@ -37,10 +37,11 @@ class Sidebar extends React.Component {
   }
 
   render() {
+    const {config, onSelectMovie} = this.props
     return (
       <div className="Sidebar">
         <SearchBar />
-        <MoviesList movies={this.state.movies} loading={this.state.loading} onSelectMovie={this.props.onSelectMovie} />
+        <MoviesList movies={this.state.movies} loading={this.state.loading} config={config} onSelectMovie={onSelectMovie} />
       </div>
     )
   }

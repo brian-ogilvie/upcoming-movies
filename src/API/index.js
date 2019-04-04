@@ -27,7 +27,7 @@ const API = {
 
   async getConfiguration() {
     try {
-      const url = '/configuration'
+      const url = '/config'
       const res = await axios.get(url)
       const {config, error} = res.data
       if (error) {throw error;}

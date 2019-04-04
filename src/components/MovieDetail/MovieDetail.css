@@ -1,4 +1,17 @@
 .MovieDetail {
   flex-basis: 70%;
   padding: 15px 25px;
+  height: 100%;
+  overflow: scroll;
+}
+
+.MovieDetail__title {
+  text-align: center;
+  font-size: 3rem;
+}
+
+.MovieDetail__poster {
+  margin-right: 15px;
+  float: left;
+  width: 40%;
 }

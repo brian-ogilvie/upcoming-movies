@@ -2,12 +2,25 @@
   display: flex;
   flex-flow: row nowrap;
   align-items: flex-start;
+  background-color: rgb(175, 175, 175);
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 8px;
 }
 
 .MovieRow__poster {
   width: 92px;
+  flex-shrink: 0;
 }
 
 .MovieRow__content {
   flex-grow: 2;
+}
+
+.MovieRow__title {
+  margin-top: 0;
+}
+
+.MovieRow__date {
+  margin-bottom: 0;
 }

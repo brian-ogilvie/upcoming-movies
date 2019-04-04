@@ -33,17 +33,19 @@ class MovieDetail extends React.PureComponent {
   }
 
   render () {
-    // const {config} = this.props
+    const {config} = this.props
     if (this.state.movie) {
       const {title, overview, release_date, genres, poster_path} = this.state.movie
       const allGenres = genres.join(', ')
       return (
         <div className="MovieDetail">
           <h2 className="MovieDetail__title">{title}</h2>
+          <div className="MovieDetail__poster">
+            <Poster size="large" config={config} path={poster_path} />
+          </div>
           <p>Relsease Date: {Utils.parseDate(release_date)}</p>
           <p>{allGenres}</p>
           <p>Overview: {overview}</p>
-          <Poster size="large" />
         </div>
       )
     }
