@@ -4,11 +4,16 @@ import Utils from '../../utils'
 
 import Poster from '../Poster/Poster'
 
-const MovieRow = ({movie}) => {
+const MovieRow = ({movie, onSelectMovie}) => {
   const {id, title, genres, poster_path, release_date} = movie
   const allGenres = genres.join(', ')
+
+  const handleClick = e => {
+    onSelectMovie(id)
+  }
+
   return (
-    <div className="MovieRow">
+    <div className="MovieRow" onClick={handleClick}>
       <div className="MovieRow__content">
         <h3>{title}</h3>
         <p>{allGenres}</p>

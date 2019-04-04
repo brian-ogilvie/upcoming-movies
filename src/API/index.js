@@ -13,6 +13,18 @@ const API = {
     }
   },
 
+  async getMovieById(movieId) {
+    try {
+      const url = `/movies/lookup/${movieId}`
+      const res = await axios.get(url)
+      const {movie, error} = res.data
+      if (error) {throw error}
+      return movie
+    } catch (e) {
+      throw e
+    }
+  },
+
   async getConfiguration() {
     try {
       const url = '/configuration'

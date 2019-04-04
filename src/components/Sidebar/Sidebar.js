@@ -40,7 +40,7 @@ class Sidebar extends React.Component {
     return (
       <div className="Sidebar">
         <SearchBar />
-        <MoviesList movies={this.state.movies} loading={this.state.loading} />
+        <MoviesList movies={this.state.movies} loading={this.state.loading} onSelectMovie={this.props.onSelectMovie} />
       </div>
     )
   }

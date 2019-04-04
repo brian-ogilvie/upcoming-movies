@@ -12,7 +12,7 @@ class MoviesList extends React.Component {
 
   render() {
     const allMovies = this.props.movies.map(movie => {
-      return <MovieRow movie={movie} key={movie.id} />
+      return <MovieRow movie={movie} key={movie.id} onSelectMovie={this.props.onSelectMovie} />
     })
     return (
       <div className="MoviesList">
