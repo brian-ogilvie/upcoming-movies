@@ -17,6 +17,7 @@ class MovieDetail extends React.Component {
 
   getMovie = async () => {
     try {
+      await this.setState({movie: null})
       const {movieId} = this.props
       if (!movieId) {return;}
       const movie = await API.getMovieById(movieId)

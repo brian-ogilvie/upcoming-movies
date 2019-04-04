@@ -50,7 +50,11 @@ class MoviesList extends React.Component {
     return (
       <div ref={listDiv => this.listDiv = listDiv} className="MoviesList">
         {allMovies}
-        {this.props.loading && <ActivityIndicator />}
+        {this.props.loading && (
+          <div className="MoviesList__activity">
+            <ActivityIndicator size="small" />
+          </div>
+        )}
       </div>
     )
   }
