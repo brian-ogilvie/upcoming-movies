@@ -76,7 +76,7 @@ const movieHelpers = {
   
   async cacheMovies(movies, totalPages) {
     try {
-      // await Movie.truncate({restartIdentity: true})
+      await Movie.truncate({restartIdentity: true})
       const allMovies = [...movies]
       // retrieve all remaining upcoming moveis from TMDB
       const remainingMovies = await getRemainingPages(totalPages)
