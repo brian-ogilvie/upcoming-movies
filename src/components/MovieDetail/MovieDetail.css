@@ -4,6 +4,7 @@
   height: 100%;
   overflow: scroll;
   font-size: 1.125rem;
+  position: relative;
 }
 
 .MovieDetail__title {

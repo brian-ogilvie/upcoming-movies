@@ -50,14 +50,9 @@ class MovieDetail extends React.Component {
         </div>
       )
     }
-    if (this.props.movieId) return (
-      <div className="MovieDetail">
-        <ActivityIndicator />
-      </div>
-    )
     return (
       <div className="MovieDetail">
-        <h3 className="MovieDetail__instructions">Click on a movie to the left to view more details.</h3>
+        <ActivityIndicator />
       </div>
     )
   }
