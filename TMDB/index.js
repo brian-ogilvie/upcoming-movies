@@ -30,8 +30,11 @@ const TMDB = {
     const endpoint = `${URL}configuration?api_key=${apiKey}`
     try {
       const res = await axios.get(endpoint)
-      const {base_url, poster_sizes} = res.data.images
-      return {base_url, poster_sizes}
+      const {secure_base_url, poster_sizes} = res.data.images
+      return {
+        base_url: secure_base_url,
+        poster_sizes
+      }
     } catch (e) {
       throw e
     }
