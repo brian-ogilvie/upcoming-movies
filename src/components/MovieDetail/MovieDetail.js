@@ -58,7 +58,7 @@ class MovieDetail extends React.Component {
     )
     return (
       <div className="MovieDetail">
-        <h3 className="MovieDetail__instructions">Click on a movie to the right to view more details.</h3>
+        <h3 className="MovieDetail__instructions">Click on a movie to the left to view more details.</h3>
       </div>
     )
   }
