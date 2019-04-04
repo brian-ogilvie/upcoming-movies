@@ -72,7 +72,7 @@ app.get('/movies', async (req, res, next) => {
     const page = req.query.page || 1
     const cachedMovies = await Movie.findAll({
       attributes: {
-        exclude: ['createdAt', 'updatedAt']
+        exclude: ['createdAt', 'updatedAt', 'overview']
       },
       offset: 20 * (page - 1),
       limit: 20,
@@ -110,7 +110,7 @@ app.get('/movies/search', async (req, res) => {
     }
     const movies = await Movie.findAll({
       attributes: {
-        exclude: ['createdAt', 'updatedAt']
+        exclude: ['createdAt', 'updatedAt', 'overview']
       },
       where: {
         title: {
@@ -119,6 +119,19 @@ app.get('/movies/search', async (req, res) => {
       }
     })
     res.json({movies})
+  } catch (e) {
+    errorHandler(res, e)
+  }
+})
+
+app.get('/movies/lookup/:id', async (req, res) => {
+  try {
+    const movie = await Movie.findByPk(req.params.id, {
+      attributes: {
+        exclude: ['createdAt', 'updatedAt']
+      },
+    })
+    res.json({movie})
   } catch (e) {
     errorHandler(res, e)
   }
