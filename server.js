@@ -36,10 +36,8 @@ app.get('/movies', async (req, res, next) => {
   try {
     const {haveRecent} = await haveRecentCache('genres', 7)
     if (haveRecent) {
-      console.log('✅ have recent genres.')
       req.haveGenres = true
     }
-    console.log('✅ no recent genres.')
     next()
   } catch (e) {
     errorHandler(res, e)
@@ -70,10 +68,8 @@ app.get('/movies', async (req, res, next) => {
   try {
     const {haveRecent} = await haveRecentCache('movies', 1)
     if (!haveRecent) {
-      console.log('✅ no recent movies.')
       return next()
     }
-    console.log('✅ have recent movies!')
 
     const page = req.query.page || 1
     const cachedMovies = await Movie.findAll({
