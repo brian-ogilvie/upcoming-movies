@@ -45,7 +45,7 @@ class MoviesList extends React.Component {
   render() {
     const {movies, onSelectMovie} = this.props
     const allMovies = movies.map(movie => {
-      return <MovieRow movie={movie} key={movie.id} onSelectMovie={onSelectMovie} />
+      return <MovieRow movie={movie} key={movie.movie_id} onSelectMovie={onSelectMovie} />
     })
     return (
       <div ref={listDiv => this.listDiv = listDiv} className="MoviesList">

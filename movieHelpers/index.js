@@ -48,7 +48,7 @@ const movieHelpers = {
         })
         const posterPaths = createPosterPaths(config.data, movie.poster_path)
         return {
-          id: movie.id,
+          movie_id: movie.id,
           title: movie.title,
           ...posterPaths,
           genres: theseGenres,
@@ -76,7 +76,7 @@ const movieHelpers = {
   
   async cacheMovies(movies, totalPages) {
     try {
-      await Movie.truncate()
+      await Movie.truncate({restartIdentity: true})
       const allMovies = [...movies]
       // retrieve all remaining upcoming moveis from TMDB
       const remainingMovies = await getRemainingPages(totalPages)

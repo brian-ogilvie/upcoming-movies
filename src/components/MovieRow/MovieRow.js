@@ -5,11 +5,11 @@ import Utils from '../../utils'
 import Poster from '../Poster/Poster'
 
 const MovieRow = ({movie, onSelectMovie}) => {
-  const {id, title, genres, poster_path_small, release_date} = movie
+  const {movie_id, title, genres, poster_path_small, release_date} = movie
   const allGenres = genres.join(', ')
 
   const handleClick = e => {
-    onSelectMovie(id)
+    onSelectMovie(movie_id)
   }
 
   return (

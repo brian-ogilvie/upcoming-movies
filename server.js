@@ -72,9 +72,10 @@ app.get('/movies', async (req, res, next) => {
     }
     const page = req.query.page || 1
     const cachedMovies = await Movie.findAll({
-      attributes: ['id','title', 'poster_path_small', 'genres', 'release_date'],
+      attributes: ['movie_id','title', 'poster_path_small', 'genres', 'release_date'],
       offset: 20 * (page - 1),
       limit: 20,
+      order: ['id'],
     })
     if (cachedMovies.length) {
       return res.json({movies: cachedMovies})
@@ -108,13 +109,14 @@ app.get('/movies/search', async (req, res) => {
       return res.json({movies: []})
     }
     const movies = await Movie.findAll({
-      attributes: ['id','title', 'poster_path_small', 'genres', 'release_date'],
+      attributes: ['movie_id','title', 'poster_path_small', 'genres', 'release_date'],
       where: {
         title: {
           [Op.iLike]: `%${req.query.title}%`
         }
       },
       limit: 10,
+      order: ['id'],
     })
     res.json({movies})
   } catch (e) {
@@ -122,11 +124,13 @@ app.get('/movies/search', async (req, res) => {
   }
 })
 
-app.get('/movies/lookup/:id', async (req, res) => {
+app.get('/movies/lookup/:movie_id', async (req, res) => {
   try {
-    const movie = await Movie.findByPk(req.params.id, {
-      attributes: ['id','title', 'poster_path_large', 'genres', 'release_date', 'overview'],
-
+    const movie = await Movie.findOne({
+      where: {
+        movie_id: req.params.movie_id,
+      },
+      attributes: ['movie_id','title', 'poster_path_large', 'genres', 'release_date', 'overview'],
     })
     res.json({movie})
   } catch (e) {

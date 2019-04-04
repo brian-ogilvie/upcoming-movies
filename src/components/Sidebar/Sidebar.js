@@ -40,7 +40,7 @@ class Sidebar extends React.PureComponent {
   autoSelectFirstMovie = () => {
     if (this.state.initialLoad) { return }
     this.setState({initialLoad: true})
-    const firstMovieId = this.state.movies[0].id
+    const firstMovieId = this.state.movies[0].movie_id
     this.props.onSelectMovie(firstMovieId)
   }
 

@@ -4,9 +4,14 @@ module.exports = {
     return queryInterface.createTable('movies', {
       id: {
         allowNull: false,
-        autoIncrement: false,
+        autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
+      },
+      movie_id: {
+        allowNull: false,
+        unique: true,
+        type: Sequelize.INTEGER       
       },
       title: {
         type: Sequelize.STRING
