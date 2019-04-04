@@ -5,13 +5,14 @@ import API from '../../API'
 import SearchBar from '../SearchBar/SearchBar'
 import MoviesList from '../MoviesList/MoviesList'
 
-class Sidebar extends React.Component {
+class Sidebar extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
       movies: [],
       loading: true,
       page: 0,
+      activeSearch: false
     }
   }
 
@@ -40,6 +41,32 @@ class Sidebar extends React.Component {
     this.getMovies(page)
   }
 
+  searchMovies = async searchTerm => {
+    try {
+      await this.setState({
+        loading: true,
+        movies: []
+      })
+      const movies = await API.searchMovies(searchTerm)
+      this.setState({
+        movies,
+        loading: false,
+        activeSearch: true
+      })
+    } catch (e) {
+      console.log(e.message);
+    }
+  }
+
+  clearSearch = async () => {
+    if (!this.state.activeSearch) {return}
+    await this.setState({
+      movies: [],
+      activeSearch: false,
+    })
+    this.getMovies()
+  }
+
   componentDidMount() {
     this.getMovies()
   }
@@ -48,7 +75,7 @@ class Sidebar extends React.Component {
     const {config, onSelectMovie} = this.props
     return (
       <div className="Sidebar">
-        <SearchBar />
+        <SearchBar onSearch={this.searchMovies} onClear={this.clearSearch} />
         <MoviesList 
           movies={this.state.movies} 
           loading={this.state.loading} 
