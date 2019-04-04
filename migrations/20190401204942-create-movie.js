@@ -11,7 +11,10 @@ module.exports = {
       title: {
         type: Sequelize.STRING
       },
-      poster_path: {
+      poster_path_small: {
+        type: Sequelize.STRING
+      },
+      poster_path_large: {
         type: Sequelize.STRING
       },
       genres: {

@@ -15,16 +15,15 @@ const app = new express()
 app.use(morgan('dev'))
 app.use(bodyParser.json())
 
-app.get('/config', async (req, res, next) => {
+app.get('/movies', async (req, res, next) => {
   try {
-    const {haveRecent, data} = await haveRecentCache('config', 7)
+    const {haveRecent} = await haveRecentCache('config', 7)
     if (haveRecent) {
-      return res.json({config: data})
+      return next()
     }
     const config = await TMDB.getConfiguration()
-
-    res.json({config})
-    cacheConfig(config)
+    await cacheConfig(config)
+    next()
   } catch (e) {
     errorHandler(res, e)
   }
@@ -71,9 +70,7 @@ app.get('/movies', async (req, res, next) => {
     }
     const page = req.query.page || 1
     const cachedMovies = await Movie.findAll({
-      attributes: {
-        exclude: ['createdAt', 'updatedAt', 'overview']
-      },
+      attributes: ['id','title', 'poster_path_small', 'genres', 'release_date'],
       offset: 20 * (page - 1),
       limit: 20,
     })
@@ -109,9 +106,7 @@ app.get('/movies/search', async (req, res) => {
       res.json({movies: []})
     }
     const movies = await Movie.findAll({
-      attributes: {
-        exclude: ['createdAt', 'updatedAt', 'overview']
-      },
+      attributes: ['id','title', 'poster_path_small', 'genres', 'release_date'],
       where: {
         title: {
           [Op.iLike]: `%${req.query.title}%`
@@ -127,9 +122,8 @@ app.get('/movies/search', async (req, res) => {
 app.get('/movies/lookup/:id', async (req, res) => {
   try {
     const movie = await Movie.findByPk(req.params.id, {
-      attributes: {
-        exclude: ['createdAt', 'updatedAt']
-      },
+      attributes: ['id','title', 'poster_path_large', 'genres', 'release_date', 'overview'],
+
     })
     res.json({movie})
   } catch (e) {

@@ -33,6 +33,12 @@ const movieHelpers = {
   async optimizeMovies(movies) {
     try {
       const genres = await Genre.findAll({attributes: ['id','name'], raw: true})
+      const config = await Update.findOne({
+        where: {model: 'config'},
+        attributes: ['data'],
+        order: [['id', 'DESC']],
+        raw: true
+      })
       return movies.map(movie => {
         const theseGenres = movie.genre_ids.map(id => {
           const genreObj = genres.find(genre => {
@@ -40,10 +46,11 @@ const movieHelpers = {
           })
           return genreObj ? genreObj.name : 'unknown'
         })
+        const posterPaths = createPosterPaths(config.data, movie.poster_path)
         return {
           id: movie.id,
           title: movie.title,
-          poster_path: movie.poster_path,
+          ...posterPaths,
           genres: theseGenres,
           overview: movie.overview,
           release_date: movie.release_date,
@@ -130,6 +137,18 @@ async function getRemainingPages(totalPages, startPage = 2) {
   } catch (e) {
     errorHandler(e)
     return null
+  }
+}
+
+function createPosterPaths(config, path) {
+  const {base_url, poster_sizes} = config
+  const smallString = poster_sizes[0]
+  const largeString = poster_sizes[poster_sizes.length - 2]
+  const smallUrl = base_url + smallString + path
+  const largeUrl = base_url + largeString + path
+  return {
+    poster_path_small: smallUrl,
+    poster_path_large: largeUrl,
   }
 }
 
