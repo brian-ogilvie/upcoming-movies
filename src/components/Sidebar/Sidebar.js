@@ -12,7 +12,8 @@ class Sidebar extends React.PureComponent {
       movies: [],
       loading: true,
       page: 0,
-      activeSearch: false
+      activeSearch: false,
+      initialLoad: false,
     }
   }
 
@@ -20,7 +21,7 @@ class Sidebar extends React.PureComponent {
     try {
       await this.setState({loading: true})
       const movies = await API.getMovies(page)
-      this.setState(prevState => {
+      await this.setState(prevState => {
         return {
           movies: [
             ...prevState.movies,
@@ -30,9 +31,17 @@ class Sidebar extends React.PureComponent {
           page: page
         }
       })
+      this.autoSelectFirstMovie()
     } catch (e) {
       console.log(e.message)
     }
+  }
+
+  autoSelectFirstMovie = () => {
+    if (this.state.initialLoad) { return }
+    this.setState({initialLoad: true})
+    const firstMovieId = this.state.movies[0].id
+    this.props.onSelectMovie(firstMovieId)
   }
 
   infiniteScroll = () => {
