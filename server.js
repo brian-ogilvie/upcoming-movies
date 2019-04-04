@@ -2,8 +2,9 @@ require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
+const path = require('path')
 
-const PORT = process.env.EXPRESS_PORT
+const PORT = process.env.PORT || 5000
 
 const TMDB = require('./TMDB')
 const db = require('./models')
@@ -14,6 +15,7 @@ const {cacheGenres, cacheMovies, cacheConfig, optimizeMovies, haveRecentCache} =
 const app = new express()
 app.use(morgan('dev'))
 app.use(bodyParser.json())
+app.use('/', express.static('./build/'))
 
 app.get('/movies', async (req, res, next) => {
   try {
@@ -131,6 +133,14 @@ app.get('/movies/lookup/:id', async (req, res) => {
     errorHandler(res, e)
   }
 })
+
+// In production, any request that doesn't match a previous route
+// should send the front-end application, which will handle the route.
+if (process.env.NODE_ENV == "production") {
+  app.get("/*", function(request, response) {
+    response.sendFile(path.join(__dirname, "build", "index.html"));
+  });
+}
 
 app.listen(PORT, () => {
   console.log('☎️  Express server is listening on port', PORT)
