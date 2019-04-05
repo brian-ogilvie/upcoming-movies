@@ -25,7 +25,6 @@ class App extends Component {
   render() {
     const {selectedMovieId} = this.state
     const sidebarInvisible = window.innerWidth < 500 && selectedMovieId !== null
-    console.log(sidebarInvisible)
     return (
       <div className="App">
         {!sidebarInvisible &&

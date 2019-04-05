@@ -1,6 +1,6 @@
 .BackButton {
   font-size: 30px;
-  position: absolute;
+  position: fixed;
   top: 10px;
   left: 15px;
   margin: 0;
