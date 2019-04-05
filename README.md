@@ -2,7 +2,7 @@
 
 A backend coding assessment.
 
-Test out the deoployed project at [https://ogilvie-movies.herokuapp.com](https://ogilvie-movies.herokuapp.com)
+Test out the deployed project at [https://ogilvie-movies.herokuapp.com](https://ogilvie-movies.herokuapp.com)
 
 ## The Assignment
 
