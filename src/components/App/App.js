@@ -23,10 +23,15 @@ class App extends Component {
   }
 
   render() {
+    const {selectedMovieId} = this.state
+    const sidebarInvisible = window.innerWidth < 500 && selectedMovieId !== null
+    console.log(sidebarInvisible)
     return (
       <div className="App">
-        <Sidebar onSelectMovie={this.handleSelectMovie} />
-        <MovieDetail movieId={this.state.selectedMovieId} onDismiss={this.handleDismiss} />
+        {!sidebarInvisible &&
+          <Sidebar onSelectMovie={this.handleSelectMovie} />
+        }
+        <MovieDetail movieId={selectedMovieId} onDismiss={this.handleDismiss} />
       </div>
     );
   }
