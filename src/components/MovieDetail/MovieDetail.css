@@ -7,6 +7,10 @@
   position: relative;
 }
 
+.MovieDetail .BackButton {
+  display: none;
+}
+
 .MovieDetail__title {
   margin-top: 0;
   margin-bottom: 12px;
@@ -30,4 +34,30 @@
 
 .MovieDetail__info, .MovieDetail__poster, .MovieDetail__title {
   animation: fade-in .3s linear;
+}
+
+@media only screen and (max-width: 500px) {
+  .MovieDetail {
+    display: none;
+  }
+  .MovieDetail--visible {
+    display: block;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: white;
+    z-index: 300;
+    padding: 50px 5px 10px;
+  }
+  .MovieDetail__title {
+    font-size: 2rem;
+  }
+  .MovieDetail .BackButton {
+    display: block;
+  }
+  .MovieDetail__poster {
+    margin: 0 10px 0 5px;
+  }
 }

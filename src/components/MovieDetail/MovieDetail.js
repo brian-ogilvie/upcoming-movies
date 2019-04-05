@@ -6,6 +6,7 @@ import Utils from '../../utils'
 
 import Poster from '../Poster/Poster'
 import ActivityIndicator from '../ActivityIndicator/ActivityIndicator'
+import BackButton from '../BackButton/BackButton'
 
 class MovieDetail extends React.Component {
   constructor() {
@@ -37,8 +38,10 @@ class MovieDetail extends React.Component {
     if (this.state.movie) {
       const {title, overview, release_date, genres, poster_path_large} = this.state.movie
       const allGenres = genres.join(', ')
+      const visibleClass = this.props.movieId ? ' MovieDetail--visible' : ''
       return (
-        <div className="MovieDetail">
+        <div className={"MovieDetail" + visibleClass}>
+          <BackButton onClick={this.props.onDismiss} />
           <h2 className="MovieDetail__title">{title}</h2>
           {poster_path_large && (
             <div className="MovieDetail__poster">

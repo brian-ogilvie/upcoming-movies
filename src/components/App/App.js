@@ -16,11 +16,17 @@ class App extends Component {
     this.setState({selectedMovieId})
   }
 
+  handleDismiss = () => {
+    this.setState({
+      selectedMovieId: null
+    })
+  }
+
   render() {
     return (
       <div className="App">
         <Sidebar onSelectMovie={this.handleSelectMovie} />
-        <MovieDetail movieId={this.state.selectedMovieId} />
+        <MovieDetail movieId={this.state.selectedMovieId} onDismiss={this.handleDismiss} />
       </div>
     );
   }

@@ -6,3 +6,10 @@
   position: relative;
   height: 40px;
 }
+
+@media only screen and (max-width: 500px) {
+  .MoviesList {
+    margin-top: 100px;
+    padding: 0 5px;
+  }
+}
