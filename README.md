@@ -48,6 +48,7 @@ Though I was instructed to keep the front-end simple, I did include a few nice f
 - I implemented an "infinite scroll" for the movie list. When the user scrolls through the list, the next group of movies is automatically loaded when they reach the bottom, giving the illusion that they can scroll forever. 
 - I made a simple CSS animation to indicate network activity. These are presented any time the user initiates an action that could take some time, such as selecting a movie to view or performing a search. This gives the user instant feedback that the application is working on their request.
 - I added CSS shadows with a large blur radius to the posters and to the elements in the movie list as well as a gradient to give the movie list the appearance of disappearing behind the search form. These features give the application some depth.
+- **Responsive Design:** The movie list takes up the full width of the window on a small screen. On selecting a movie, the movie details are presented modally, along with a back button to dismiss them. Also, the film poster is moved to the bottom of the movie details screen and takes up the full width of the window.
 
 ## Assumptions
 
