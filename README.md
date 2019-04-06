@@ -81,6 +81,10 @@ Once those are in place, you can fork and clone this repository and run the foll
 
 `npm install`
 
+Initialize the database
+
+`sequelize db:create`
+
 In order to run both servers together in your development environment, you'll need to execute the following command: 
 
 `npm run dev`
