@@ -1,0 +1,16 @@
+.Sidebar {
+  height: 100%;
+  overflow: scroll;
+  flex-basis: 30%;
+  min-width: 300px;
+  padding: 0 0 15px;
+  position: relative;
+}
+
+@media only screen and (max-width: 500px) {
+  .Sidebar {
+    height: auto;
+    min-height: 100vh;
+    overflow: auto;
+  }
+}

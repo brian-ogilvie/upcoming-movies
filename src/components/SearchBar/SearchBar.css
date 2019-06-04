@@ -1,0 +1,46 @@
+.SearchBar {
+  position: sticky;
+  z-index: 100;
+  top: 0;
+  padding: 15px 25px 5px;
+  width: 100%;
+  background: linear-gradient(white 20%, rgba(255,255,255,0));
+  animation: fade-in .3s linear;
+}
+
+.SearchBar__input {
+  width: 100%;
+  padding: 5px 10px;
+  font-size: 1rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, .3);
+  border-radius: 5px;
+}
+
+.SearchBar__buttons {
+  margin-top: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.SearchBar__buttons button {
+  flex-basis: 48%;
+  padding: 5px;
+  font-size: 1rem;
+  border-radius: 5px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, .3);
+  background-color: white;
+  cursor: pointer;
+}
+
+.SearchBar__buttons button, .SearchBar__input {
+  font-family: 'Staatliches', sans-serif;
+}
+
+@media only screen and (max-width: 500px) {
+  .SearchBar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+}

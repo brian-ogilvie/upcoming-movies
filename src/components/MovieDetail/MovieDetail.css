@@ -1,0 +1,65 @@
+.MovieDetail {
+  flex-basis: 70%;
+  padding: 15px 25px;
+  height: 100%;
+  overflow: scroll;
+  font-size: 1.125rem;
+  position: relative;
+}
+
+.MovieDetail .BackButton {
+  display: none;
+}
+
+.MovieDetail__title {
+  margin-top: 0;
+  margin-bottom: 12px;
+  text-align: center;
+  font-size: 3.2rem;
+}
+
+.MovieDetail__poster {
+  margin-right: 25px;
+  float: left;
+  width: 40%;
+}
+
+.MovieDetail__instructions {
+  text-align: center;
+}
+
+.MovieDetail__poster img {
+  box-shadow: 0 0 50px rgba(0, 0, 0, .4);
+}
+
+.MovieDetail__info, .MovieDetail__poster, .MovieDetail__title {
+  animation: fade-in .3s linear;
+}
+
+@media only screen and (max-width: 500px) {
+  .MovieDetail {
+    display: none;
+  }
+  .MovieDetail--visible {
+    display: flex;
+    flex-flow: column nowrap;
+    background-color: white;
+    min-height: 100vh;
+    padding: 50px 10px 10px;
+  }
+  .MovieDetail__title {
+    font-size: 2rem;
+  }
+  .MovieDetail .BackButton {
+    display: block;
+  }
+  .MovieDetail__poster {
+    margin: 10px 0;
+    order: 6;
+    align-self: center;
+    width: 95%;
+  }
+  .MovieDetail__info {
+    margin: 8px 0; 
+  }
+}
